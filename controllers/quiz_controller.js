@@ -10,15 +10,30 @@ exports.index = function(req,res)
 	models.Quiz.findAll().then(function(quizes)
 	{
 		res.render('quizes/index.ejs',{quizes:quizes});
-	})
+	}).catch(function(error) {next(error);})
+};
+
+exports.load = function(req,res,next,quizId)
+{
+	models.Quiz.findById(quizId).then(function(quiz)
+	{
+		if(quiz)
+		{
+			req.quiz = quiz;
+			next();
+
+		}else{next(new Error("No existe quizId" + quizId))}
+	}).catch(function(error){next(error);});
+	//res.render('quizes/question',{pregunta:'Capital de España?',pregunta2:'Capital de Francia?'});
 };
 
 exports.show = function(req,res)
 {
-	models.Quiz.findById(req.params.quizId).then(function(quiz)
-	{
-		res.render('quizes/show',{quiz:quiz});
-	})
+	//models.Quiz.findById(req.params.quizId).then(function(quiz)
+	//{
+	//	res.render('quizes/show',{quiz:quiz});
+	//})
+	res.render('quizes/show',{quiz:req.quiz});
 	//res.render('quizes/question',{pregunta:'Capital de España?',pregunta2:'Capital de Francia?'});
 };
 
@@ -33,15 +48,10 @@ exports.show = function(req,res)
 
 exports.answer = function(req,res)
 {
-	models.Quiz.findById(req.params.quizId).then(function(quiz)
-	{
-		if(req.query.respuesta ===quiz.respuesta)
+	 var resultado="Incorrecto";
+		if(req.query.respuesta ===req.quiz.respuesta)
 		{
-			res.render('quizes/answer',{quiz:quiz,respuesta:'Correcto!'});
+			resultado="Correcto";
 		}
-		else
-		{
-			res.render('quizes/answer',{quiz:quiz,respuesta:'Incorrecto! Respuesta correcta:'+quiz.respuesta});
-		}
-	})
+		res.render('quizes/answer',{quiz:req.quiz,respuesta:resultado});
 };
