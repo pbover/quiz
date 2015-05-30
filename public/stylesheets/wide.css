@@ -1,7 +1,5 @@
 body
 { background: #C45200; }
-#page-wrap:after
-{ content: "Wide Layout"; }
 nav
 { float: left; width: 15%; height: 200px ;}
 nav span
