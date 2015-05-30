@@ -1,3 +1,7 @@
+exports.author = function(req,res)
+{
+res.render('/author/index',{ title: 'Créditos' });
+};
 exports.question = function(req,res)
 {
 res.render('quizes/question',{pregunta:'Capital de España?',pregunta2:'Capital de Francia?'});
