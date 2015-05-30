@@ -4,12 +4,15 @@ module.exports = function(sequelize, DataTypes) {
     'Quiz',
       { pregunta:
         {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        validate:{notEmpy:{msg: "-> falta Pregunta"}}
         }
       ,
         respuesta:
         {
         type: DataTypes.STRING
+        ,
+        validate:{notEmpy:{msg: "-> falta Respuesta"}
         }
       });
 };
