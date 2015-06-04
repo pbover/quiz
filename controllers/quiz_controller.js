@@ -5,6 +5,13 @@ exports.author = function(req,res)
 res.render('/author/index',{ title: 'Créditos' ,errors:[]});
 };
 
+
+exports.destroy = function(req, res) {
+  req.quiz.destroy().then( function() {
+    res.redirect('/quizes');
+  }).catch(function(error){next(error)});
+};
+
 exports.edit = function(req,res)
 {
 	var quiz = req.quiz;
