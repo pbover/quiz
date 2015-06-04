@@ -1,4 +1,2 @@
-# Modulo 6 - P2P Obligatorio
-
-# Ejercicio Javascript
+# Ejercicio Quiz Curso MiriadaX Javascript Node.js
 Juego de preguntas y respuestas. v 1.0
