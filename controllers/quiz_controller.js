@@ -7,11 +7,29 @@ res.render('/author/index',{ title: 'Créditos' });
 
 exports.index = function(req,res)
 {
-	models.Quiz.findAll().then(function(quizes)
+	//console.log(req.query.search);
+	var search = req.query.search;
+	if(!search)
 	{
-		res.render('quizes/index.ejs',{quizes:quizes});
-	}).catch(function(error) {next(error);})
+		models.Quiz.findAll().then(function(quizes)
+		{
+			res.render('quizes/index.ejs',{quizes:quizes,search:''});
+		}).catch(function(error) {next(error);});
+
+	}
+	else {
+		search = search.trim().replace(" ", "%");
+		search = "%" + search + "%";
+		console.log("Buscando: " +  search);
+		models.Quiz.findAll( {where: ["pregunta like ?", search]}).then(function(quizes)
+		{
+			res.render('quizes/index.ejs',{quizes:quizes,search:req.query.search});
+		}).catch(function(error) {next(error);});
+	}
+
 };
+
+
 
 exports.load = function(req,res,next,quizId)
 {
@@ -22,7 +40,7 @@ exports.load = function(req,res,next,quizId)
 			req.quiz = quiz;
 			next();
 
-		}else{next(new Error("No existe quizId" + quizId))}
+		}else{next(new Error("No existe quizId: " + quizId))}
 	}).catch(function(error){next(error);});
 	//res.render('quizes/question',{pregunta:'Capital de España?',pregunta2:'Capital de Francia?'});
 };
