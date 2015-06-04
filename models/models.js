@@ -11,8 +11,12 @@ exports.Quiz = Quiz;
 
 //sequelize.sync() crea e inicializa la tabla de preguntas en la basde de datos
 sequelize.sync().then(function(){
+  
+
   Quiz.count().then(function(count){
+
     if(count===0){
+
       Quiz.create({pregunta:'Capital de Italia',
                    respuesta:'Roma'
                  });
