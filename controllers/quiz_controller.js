@@ -33,18 +33,18 @@ exports.update = function(req,res)
 			}
 			else {
 				req.quiz
-				.save({fields:["pregunta","respuesta"]})
+				.save({fields:["pregunta","respuesta","tema"]})
 				.then(function(){res.redirect('/quizes');})
 			}
 		}
-	);
+	).catch(function(error){next(error)});
 };
 
 exports.new = function(req,res)
 {
 	var quiz = models.Quiz.build(
 		{
-			pregunta:"Pregunta", respuesta:"Respuesta"
+			pregunta:"Pregunta", respuesta:"Respuesta",tema:"otro"
 		}
 	);
 	res.render('quizes/new',{quiz:quiz,errors:[]});
@@ -65,7 +65,7 @@ exports.create = function(req, res)
 	        res.render('quizes/new', {quiz: quiz, errors: err.errors});
 	      } else {
 	        quiz // save: guarda en DB campos pregunta y respuesta de quiz
-	        .save({fields: ["pregunta", "respuesta"]})
+	        .save({fields: ["pregunta", "respuesta","tema"]})
 	        .then( function(){ res.redirect('/quizes')})
 	      }      // res.redirect: Redirección HTTP a lista de preguntas
 	    }
@@ -81,10 +81,9 @@ exports.index = function(req,res)
 	var search = req.query.search;
 	if(!search)
 	{
-<<<<<<< HEAD
 		models.Quiz.findAll().then(function(quizes)
 		{
-			res.render('quizes/index.ejs',{quizes:quizes,search:''});
+			res.render('quizes/index.ejs',{quizes:quizes,search:'',errors:[]});
 		}).catch(function(error) {next(error);});
 
 	}
@@ -94,15 +93,11 @@ exports.index = function(req,res)
 		console.log("Buscando: " +  search);
 		models.Quiz.findAll( {where: ["pregunta like ?", search]}).then(function(quizes)
 		{
-			res.render('quizes/index.ejs',{quizes:quizes,search:req.query.search});
+			res.render('quizes/index.ejs',{quizes:quizes,search:req.query.search,errors:[]});
 		}).catch(function(error) {next(error);});
 	}
 
-=======
-		res.render('quizes/index.ejs',{quizes:quizes,errors:[]});
-	})
-	//.catch(function(error){ next(error); });
->>>>>>> validacionEntradas
+
 };
 
 
