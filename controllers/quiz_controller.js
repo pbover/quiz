@@ -82,7 +82,7 @@ exports.index = function(req,res)
 	var search = req.query.search;
 	if(!search)
 	{
-		models.Quiz.findAll({order: 'pregunta ASC'}).then(function(quizes)
+		models.Quiz.findAll({order: 'LOWER(pregunta), pregunta ASC'}).then(function(quizes)
 		{
 			res.render('quizes/index.ejs',{quizes:quizes,search:'',errors:[]});
 		}).catch(function(error) {next(error);});
@@ -92,7 +92,7 @@ exports.index = function(req,res)
 		search = search.trim().replace(" ", "%");
 		search = "%" + search + "%";
 		console.log("Buscando: " +  search);
-		models.Quiz.findAll( {where: ["pregunta like ?", search],order: 'pregunta ASC'}).then(function(quizes)
+		models.Quiz.findAll( {where: ["pregunta like ?", search],order: 'LOWER(pregunta), pregunta ASC'}).then(function(quizes)
 		{
 			res.render('quizes/index.ejs',{quizes:quizes,search:req.query.search,errors:[]});
 		}).catch(function(error) {next(error)});
