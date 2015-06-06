@@ -92,10 +92,10 @@ exports.index = function(req,res)
 		search = search.trim().replace(" ", "%");
 		search = "%" + search + "%";
 		console.log("Buscando: " +  search);
-		models.Quiz.findAll( {where: ["pregunta like ?", search],order: 'pregunta ASC'}).then(function(quizes)
+		models.Quiz.findAll( {where: ["pregunta like ?", search],order: 'pregunta COLLATE NOCASE ASC'}).then(function(quizes)
 		{
 			res.render('quizes/index.ejs',{quizes:quizes,search:req.query.search,errors:[]});
-		}).catch(function(error) {next(error);});
+		}).catch(function(error) {next(error)});
 	}
 
 
@@ -113,7 +113,7 @@ exports.load = function(req,res,next,quizId)
 			next();
 
 		}else{next(new Error("No existe quizId: " + quizId))}
-	}).catch(function(error){next(error);});
+	}).catch(function(error){next(error)});
 	//res.render('quizes/question',{pregunta:'Capital de España?',pregunta2:'Capital de Francia?'});
 };
 
