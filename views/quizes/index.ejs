@@ -11,8 +11,34 @@
 </form>
 </td>
 </tr>
-<% var i; for (i=0;i<quizes.length;i++) {%>
-<tr><td><a href="quizes/<%= quizes[i].id %>"><%= quizes[i].pregunta %> ( <%= quizes[i].tema %> )</a></td>
+<% var i; for (i=0;i<quizes.length;i++) {
+
+var temaStr="";
+if(quizes[i].tema==='otro')
+{
+temaStr = 'Otro';
+}
+else if(quizes[i].tema==='humanidades')
+{
+temaStr = 'Humanidades';
+}
+else if(quizes[i].tema==='ocio')
+{
+temaStr = 'Ocio';
+}
+else if(quizes[i].tema==='ciencia')
+{
+temaStr = 'Ciencia';
+}
+else if(quizes[i].tema==='tecnologia')
+{
+temaStr = 'Tecnología';
+}
+else{
+temaStr =quizes[i].tema;
+}
+%>
+<tr><td><a href="quizes/<%= quizes[i].id %>"><%= quizes[i].pregunta %> ( <%= temaStr %> )</a></td>
 <td>
   <a href="quizes/<%= quizes[i].id %>/edit"><button>Editar</button></a>
 </td>
