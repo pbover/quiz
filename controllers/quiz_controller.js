@@ -92,7 +92,7 @@ exports.index = function(req,res)
 		search = search.trim().replace(" ", "%");
 		search = "%" + search + "%";
 		console.log("Buscando: " +  search);
-		models.Quiz.findAll( {where: ["pregunta like ?", search],order: 'pregunta COLLATE NOCASE ASC'}).then(function(quizes)
+		models.Quiz.findAll( {where: ["pregunta like ?", search],order: 'pregunta ASC'}).then(function(quizes)
 		{
 			res.render('quizes/index.ejs',{quizes:quizes,search:req.query.search,errors:[]});
 		}).catch(function(error) {next(error)});
