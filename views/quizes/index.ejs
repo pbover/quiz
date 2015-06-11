@@ -39,6 +39,7 @@ temaStr =quizes[i].tema;
 }
 %>
 <tr><td><a href="quizes/<%= quizes[i].id %>"><%= quizes[i].pregunta %> ( <%= temaStr %> )</a></td>
+<%if(session.user){%>
 <td>
   <a href="quizes/<%= quizes[i].id %>/edit"><button>Editar</button></a>
 </td>
@@ -49,11 +50,13 @@ temaStr =quizes[i].tema;
             </button>
   </form>
 </td>
+<%}%>
 </tr>
 <%}%>
+<%if(session.user){%>
 <tr>
 <td><a href="/quizes/new"><button>Crear nueva pregunta</button></a></td>
 </tr>
-
+<%}%>
 
 </table>
