@@ -30,9 +30,21 @@ var sequelize = new Sequelize(DB_name, user, pwd,
 //Usa BBDD SQLite:
 //var sequelize = new Sequelize(null,null,null,{dialect:'sqlite', storage:'quiz.sqlite'});
 //IMPORTA la definicion de la tabla Quiz en quiz.js
-var Quiz = sequelize.import(path.join(__dirname,'quiz'));
+var quiz_path = path.join(__dirname,'quiz');
+var Quiz = sequelize.import(quiz_path);
+
+var comment_path = path.join(__dirname,'comment');
+var Comment = sequelize.import(comment_path);
+
+//Relaciones
+Comment.belongsTo(Quiz);
+Quiz.hasMany(Comment);
+
+
 //Exporta definicion de la tabla Quiz
 exports.Quiz = Quiz;
+//Exporta definicion de la tabla Comment
+exports.Comment = Comment;
 
 //sequelize.sync() crea e inicializa la tabla de preguntas en la basde de datos
 sequelize.sync().then(function(){
