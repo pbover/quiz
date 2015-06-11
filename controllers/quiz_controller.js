@@ -5,7 +5,6 @@ exports.author = function(req,res)
 res.render('/author/index',{ title: 'Créditos' ,errors:[]});
 };
 
-
 exports.destroy = function(req, res) {
   req.quiz.destroy().then( function() {
     res.redirect('/quizes');
@@ -103,18 +102,21 @@ exports.index = function(req,res)
 
 
 
-exports.load = function(req,res,next,quizId)
-{
-	models.Quiz.findById(quizId).then(function(quiz)
-	{
-		if(quiz)
-		{
-			req.quiz = quiz;
-			next();
-
-		}else{next(new Error("No existe quizId: " + quizId))}
-	}).catch(function(error){next(error)});
-	//res.render('quizes/question',{pregunta:'Capital de España?',pregunta2:'Capital de Francia?'});
+exports.load = function(req, res, next, quizId) {
+  models.Quiz.find({
+            where: {
+                id: Number(quizId)
+            },
+            include: [{
+                model: models.Comment
+            }]
+        }).then(function(quiz) {
+      if (quiz) {
+        req.quiz = quiz;
+        next();
+      } else{next(new Error('No existe quizId=' + quizId))}
+    }
+  ).catch(function(error){next(error)});
 };
 
 exports.show = function(req,res)
