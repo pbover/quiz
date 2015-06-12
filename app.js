@@ -31,9 +31,9 @@ app.use(session());
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-//Helper dinamico
-app.use(function(req, res, next) {
 
+//Helper dinamico para tratamiento de session
+app.use(function(req, res, next) {
   //Tratamiento de las cookies de sessión
   //En cada petición http/s se modifica el tiempo de expiración a partir
   //de la hora actual +2 minutos
@@ -53,7 +53,12 @@ app.use(function(req, res, next) {
     console.log(" ");
     console.log(" ");
   }
+  next();
+});
 
+
+//Helper dinamico
+app.use(function(req, res, next) {
   // si no existe lo inicializa
   if (!req.session.redir) {
     req.session.redir = '/';
@@ -62,7 +67,6 @@ app.use(function(req, res, next) {
   if (!req.path.match(/\/login|\/logout|\/user/)) {
     req.session.redir = req.path;
   }
-
   // Hacer visible req.session en las vistas
   res.locals.session = req.session;
   next();
