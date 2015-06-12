@@ -21,13 +21,35 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser('pboverquiz2015'));
-app.use(session());
+
+//Dos Minutos para expiración de cookie de session
+//Esta cookie se modifica para cada petición http/s (ver en Helper dinámico)
+var tiempoExpiracion = 120000;
+app.use(session({cookie: { maxAge: tiempoExpiracion,expires: new Date(Date.now() + tiempoExpiracion)}}));
+
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-
 //Helper dinamico
 app.use(function(req, res, next) {
+
+  //Tratamiento de las cookies de sessión
+  //En cada petición http/s se modifica el tiempo de expiración a partir
+  //de la hora actual +2 minutos
+  //En caso que la sesión expire se hará logout de manera automatica al expirar cookie
+  //en el navegador
+  req.session.cookie.expires = new Date(Date.now() + tiempoExpiracion);
+  req.session.cookie.maxAge = tiempoExpiracion;
+  console.log(" ");
+  console.log(" ");
+  console.log("_________________NUEVA PETICIÓN - NUEVO TIMEOUT ___________________");
+  console.log("- Nueva modificación de tiempo de expriación de sesión");
+  console.log("  · Expira = " + req.session.cookie.expires);
+  console.log("  · MaxAge = " + req.session.cookie.expires);
+  console.log("___________________________________________________________________");
+  console.log(" ");
+  console.log(" ");
+
   // si no existe lo inicializa
   if (!req.session.redir) {
     req.session.redir = '/';
